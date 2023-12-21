@@ -11,14 +11,40 @@ datasource db {
 }
 
 model Flight {
-  id          Int      @unique @default(autoincrement())
-  origin      String
-  destination String
-  departure   DateTime
-  airline     String
-  price       Float
-  created_at  DateTime
-  updated_at  DateTime
+  id           String        @id @default(uuid())
+  origin       String
+  destination  String
+  departure    DateTime
+  airline      String
+  price        Float
+  reservations Reservation[]
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
 
   @@map("flights")
+}
+
+model Passenger {
+  id           String        @id @default(uuid())
+  name         String
+  email        String
+  reservations Reservation[]
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+
+  @@map("passengers")
+}
+
+model Reservation {
+  id              String    @id @default(uuid())
+  flightId        String
+  passengerId     String
+  seatNumberId    Int
+  reservationDate DateTime  @default(now())
+  Flight          Flight    @relation(fields: [flightId], references: [id])
+  Passenger       Passenger @relation(fields: [passengerId], references: [id])
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  @@map("reservations")
 }
