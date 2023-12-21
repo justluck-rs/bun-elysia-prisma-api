@@ -1,5 +1,5 @@
 import { Elysia, t } from "elysia";
-import { add, findAll, findById } from "../handlers/flights.handler";
+import { add, findAll, findById, remove } from "../handlers/flights.handler";
 
 export const flighRoutes = (app: Elysia) => (
     app.get('/flights', async () => {
@@ -22,6 +22,6 @@ export const flighRoutes = (app: Elysia) => (
         return flight;
     }),
     app.delete('/flight/:id', async ({params}) => {
-        await findById(params.id);
+        await remove(params.id);
     })
 )
